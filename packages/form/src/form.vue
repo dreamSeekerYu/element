@@ -45,6 +45,10 @@
       hideRequiredAsterisk: {
         type: Boolean,
         default: false
+      },
+      detailMode: {
+        type: Boolean,
+        default: false
       }
     },
     watch: {

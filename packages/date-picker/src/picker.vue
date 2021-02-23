@@ -6,6 +6,7 @@
     :disabled="pickerDisabled"
     :size="pickerSize"
     :name="name"
+    :detailMode="isDetailMode" 
     v-bind="firstInputId"
     v-if="!ranged"
     v-clickoutside="handleClose"
@@ -19,16 +20,19 @@
     @mouseleave.native="showClose = false"
     :validateEvent="false"
     ref="reference">
-    <i slot="prefix"
+    <i
+      v-if="!isDetailMode"
+      slot="prefix"
       class="el-input__icon"
       :class="triggerClass"
       @click="handleFocus">
     </i>
     <i slot="suffix"
+     
       class="el-input__icon"
       @click="handleClickIcon"
       :class="[showClose ? '' + clearIcon : '']"
-      v-if="haveTrigger">
+      v-if="haveTrigger && !isDetailMode">
     </i>
   </el-input>
   <div
@@ -388,6 +392,10 @@ export default {
     validateEvent: {
       type: Boolean,
       default: true
+    },
+    detailMode: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -569,6 +577,9 @@ export default {
       }
       if (id) obj.id = id;
       return obj;
+    },
+    isDetailMode() {
+      return this.elForm.detailMode || this.detailMode
     }
   },
 

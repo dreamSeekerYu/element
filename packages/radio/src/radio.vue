@@ -1,5 +1,6 @@
 <template>
   <label
+    v-if="!isDetailMode || model===label"
     class="el-radio"
     :class="[
       border && radioSize ? 'el-radio--' + radioSize : '',
@@ -19,6 +20,7 @@
         'is-disabled': isDisabled,
         'is-checked': model === label
       }"
+      v-if="!isDetailMode"
     >
       <span class="el-radio__inner"></span>
       <input
@@ -36,7 +38,7 @@
         tabindex="-1"
       >
     </span>
-    <span class="el-radio__label" @keydown.stop>
+    <span class="el-radio__label" @keydown.stop v-if="!isDetailMode || model===label">
       <slot></slot>
       <template v-if="!$slots.default">{{label}}</template>
     </span>
@@ -57,6 +59,10 @@
 
       elFormItem: {
         default: ''
+      },
+
+      elRadioboxGroup:　{
+        default: ''
       }
     },
 
@@ -68,7 +74,11 @@
       disabled: Boolean,
       name: String,
       border: Boolean,
-      size: String
+      size: String,
+      detailMode: {
+        type: Boolean,
+        default: false
+      }
     },
 
     data() {
@@ -118,6 +128,9 @@
       },
       tabIndex() {
         return (this.isDisabled || (this.isGroup && this.model !== this.label)) ? -1 : 0;
+      },
+      isDetailMode(){
+        return this.elForm.detailMode || this.detailMode || this.elRadioboxGroup.detailMode
       }
     },
 

@@ -77,6 +77,7 @@
       :autocomplete="autoComplete || autocomplete"
       :size="selectSize"
       :disabled="selectDisabled"
+      :detailMode="isDetailMode" 
       :readonly="readonly"
       :validate-event="false"
       :class="{ 'is-focus': visible }"
@@ -95,7 +96,7 @@
       <template slot="prefix" v-if="$slots.prefix">
         <slot name="prefix"></slot>
       </template>
-      <template slot="suffix">
+      <template slot="suffix" v-if="!isDetailMode">
         <i v-show="!showClose" :class="['el-select__caret', 'el-input__icon', 'el-icon-' + iconClass]"></i>
         <i v-if="showClose" class="el-select__caret el-input__icon el-icon-circle-close" @click="handleClearClick"></i>
       </template>
@@ -237,6 +238,9 @@
       },
       propPlaceholder() {
         return typeof this.placeholder !== 'undefined' ? this.placeholder : this.t('el.select.placeholder');
+      },
+      isDetailMode(){
+        return this.elForm.detailMode || this.detailMode
       }
     },
 
@@ -302,6 +306,10 @@
       popperAppendToBody: {
         type: Boolean,
         default: true
+      },
+      detailMode: {
+        type: Boolean,
+        default: false
       }
     },
 

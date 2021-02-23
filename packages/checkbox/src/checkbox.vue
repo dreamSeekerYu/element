@@ -10,6 +10,7 @@
     :id="id"
   >
     <span class="el-checkbox__input"
+      v-if="!isDetailMode"
       :class="{
         'is-disabled': isDisabled,
         'is-checked': isChecked,
@@ -47,7 +48,7 @@
         @focus="focus = true"
         @blur="focus = false">
     </span>
-    <span class="el-checkbox__label" v-if="$slots.default || label">
+    <span class="el-checkbox__label" v-if="($slots.default || label)&& (!isDetailMode || isDetailMode && isChecked)">
       <slot></slot>
       <template v-if="!$slots.default">{{label}}</template>
     </span>
@@ -66,6 +67,9 @@
         default: ''
       },
       elFormItem: {
+        default: ''
+      },
+      elCheckboxGroup:　{
         default: ''
       }
     },
@@ -158,6 +162,9 @@
         return this.isGroup
           ? this._checkboxGroup.checkboxGroupSize || temCheckboxSize
           : temCheckboxSize;
+      },
+      isDetailMode(){
+        return this.elForm.detailMode || this.detailMode || this.elCheckboxGroup.detailMode
       }
     },
 
@@ -173,7 +180,11 @@
       id: String, /* 当indeterminate为真时，为controls提供相关连的checkbox的id，表明元素间的控制关系*/
       controls: String, /* 当indeterminate为真时，为controls提供相关连的checkbox的id，表明元素间的控制关系*/
       border: Boolean,
-      size: String
+      size: String,
+      detailMode: {
+        type: Boolean,
+        default: false
+      }
     },
 
     methods: {

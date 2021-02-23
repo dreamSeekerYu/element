@@ -11,6 +11,12 @@
     inject: {
       elFormItem: {
         default: ''
+      },
+    
+    },
+    provide() {
+      return  {
+        elCheckboxGroup: this
       }
     },
 
@@ -21,7 +27,11 @@
       max: Number,
       size: String,
       fill: String,
-      textColor: String
+      textColor: String,
+      detailMode: {
+        type: Boolean,
+        default: false
+      }
     },
 
     computed: {

@@ -28,6 +28,12 @@
       }
     },
 
+    provide() {
+      return  {
+        elRadioboxGroup: this
+      }
+    },
+
     mixins: [Emitter],
 
     props: {
@@ -35,7 +41,11 @@
       size: String,
       fill: String,
       textColor: String,
-      disabled: Boolean
+      disabled: Boolean,
+      detailMode: {
+        type: Boolean,
+        default: false
+      }
     },
 
     computed: {

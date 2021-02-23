@@ -20,9 +20,15 @@
       <div class="el-input-group__prepend" v-if="$slots.prepend">
         <slot name="prepend"></slot>
       </div>
+      <span v-if="isDetailMode"
+        @compositionstart="handleCompositionStart"
+        @compositionupdate="handleCompositionUpdate"
+        @compositionend="handleCompositionEnd"
+        :aria-label="label"
+      >{{ value }}</span>
       <input
         :tabindex="tabindex"
-        v-if="type !== 'textarea'"
+        v-if="type !== 'textarea' && !isDetailMode"
         class="el-input__inner"
         v-bind="$attrs"
         :type="showPassword ? (passwordVisible ? 'text': 'password') : type"
@@ -84,6 +90,7 @@
         <slot name="append"></slot>
       </div>
     </template>
+    <span v-else-if="isDetailMode">{{ value }}</span>
     <textarea
       v-else
       :tabindex="tabindex"
@@ -104,7 +111,7 @@
       :aria-label="label"
     >
     </textarea>
-    <span v-if="isWordLimitVisible && type === 'textarea'" class="el-input__count">{{ textLength }}/{{ upperLimit }}</span>
+    <span v-if="isWordLimitVisible && type === 'textarea' && !isDetailMode" class="el-input__count">{{ textLength }}/{{ upperLimit }}</span>
   </div>
 </template>
 <script>
@@ -189,7 +196,11 @@
         type: Boolean,
         default: false
       },
-      tabindex: String
+      tabindex: String,
+      detailMode: {
+        type: Boolean,
+        default: false
+      }
     },
 
     computed: {
@@ -256,6 +267,9 @@
         // show exceed style if length of initial value greater then maxlength
         return this.isWordLimitVisible &&
           (this.textLength > this.upperLimit);
+      },
+      isDetailMode(){
+        return this.elForm.detailMode || this.detailMode
       }
     },
 
